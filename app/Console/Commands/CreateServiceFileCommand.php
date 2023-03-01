@@ -76,7 +76,7 @@ class CreateServiceFileCommand extends Command
      */
     private function createServiceFile(): void
     {
-        $content = "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Services;\n\nclass {$this->className}Service extends BaseService\n{\n}\n";
+        $content = "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Services;\n\nclass {$this->className}Service\n{\n}\n";
         file_put_contents($this->serviceFileName, $content);
     }
 

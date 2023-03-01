@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -41,8 +44,26 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, Request $request) {
+            if ($request->is('api/*')) {
+                // Validation Exception
+                if ($e instanceof ValidationException) {
+                    return $this->getBasicResponse('INVALID_PARAMETERS', $e->errors(), 422);
+                }
+                return $this->getBasicResponse('INTERNAL_ERROR', 'INTERNAL_ERROR', 500);
+            }
         });
+    }
+
+    private function getBasicResponse(string $code, $message, int $status)
+    {
+        $response = [
+            'error' => [
+                'code' => $code,
+                'message' => $message,
+            ],
+        ];
+
+        return response()->json($response, $status);
     }
 }
