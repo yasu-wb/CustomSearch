@@ -1,15 +1,15 @@
-#開発環境構築
-`
-# .envを設定
-cp .env.example .env
+# 開発環境構築
 
-# 起動
-docker-compose up -d
+## .envを設定
+`cp .env.example .env`
 
-# プロジェクトディレクトリ配下で下記コマンドを実行
-docker-compose exec laravel composer install
+## 起動
+`docker-compose up -d`
+
+## プロジェクトディレクトリ配下で下記コマンドを実行
+```
 docker-compose exec laravel php artisan key:generate
 docker-compose exec laravel php artisan config:clear
 docker-compose exec laravel npm install
 docker-compose exec laravel npm run build
-`
+```
